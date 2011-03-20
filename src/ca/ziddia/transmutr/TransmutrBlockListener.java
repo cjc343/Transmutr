@@ -2,6 +2,7 @@ package ca.ziddia.transmutr;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockRightClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +19,9 @@ public class TransmutrBlockListener extends BlockListener {
 	}
 
 	public void onBlockRightClick(BlockRightClickEvent event) {
+		Player player = event.getPlayer();
+        Transmutr.Permissions.getGroup(player.getWorld().getName(), player.getName());
+        Transmutr.Permissions.getGroup(player.getWorld().getName(), player.getName());
 		CopyOnWriteArrayList<String> transmutes = plugin.GetBlocks();
 		int blockId = event.getBlock().getTypeId();
 		for ( String blockid : transmutes ) {

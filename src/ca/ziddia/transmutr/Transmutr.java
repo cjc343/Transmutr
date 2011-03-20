@@ -76,7 +76,6 @@ public void onEnable() {
  }
  
  private void setupPermissions() {
-	 {
 		 Plugin p = this.getServer().getPluginManager().getPlugin("Permissions");
 		 if (p != null && p.isEnabled()) {
 			 Transmutr.Permissions = ((Permissions)p).getHandler();
@@ -84,7 +83,7 @@ public void onEnable() {
 	 }
 	// TODO Auto-generated method stub
 	
-}
+
 
 private static void add(String line) {
 	// TODO Auto-generated method stub
