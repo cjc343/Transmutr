@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -19,11 +20,12 @@ import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class Transmutr extends JavaPlugin{
-public static PermissionHandler Permissions = null;
+public static PermissionHandler Permissions;
  public static Transmutr instance;
  
  private final TransmutrBlockListener blockListener = new TransmutrBlockListener(this);
  private final TransmutrPluginListener pluginListener = new TransmutrPluginListener(this);
+ private final Logger log = Logger.getLogger("Minecraft");
  private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
  private CopyOnWriteArrayList<String> transmutes = new CopyOnWriteArrayList<String>();
  
@@ -75,12 +77,20 @@ public void onEnable() {
      setupPermissions();
  }
  
- private void setupPermissions() {
-		 Plugin p = this.getServer().getPluginManager().getPlugin("Permissions");
-		 if (p != null && p.isEnabled()) {
-			 Transmutr.Permissions = ((Permissions)p).getHandler();
-		 }
-	 }
+private void setupPermissions() {
+    Plugin test = this.getServer().getPluginManager().getPlugin("Permissions");
+
+    if (Transmutr.Permissions == null) {
+        if (test != null) {
+            Transmutr.Permissions = ((Permissions)test).getHandler();
+        } else {
+            log.warning("Permission system not detected, defaulting to OP");
+            if (!(transmutes).Permissions.has(player, "transmutr.allowed")) {
+                return;
+            }
+        }
+    }
+}
 	// TODO Auto-generated method stub
 	
 
