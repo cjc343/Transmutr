@@ -21,7 +21,6 @@ public class TransmutrPluginListener extends ServerListener {
         this.plugin = plugin;
     }
 
-    @Override
     public void onPluginEnabled(PluginEvent event) {
         if (plugin.getPermissions() == null) {
             Plugin permissions = plugin.getServer().getPluginManager().getPlugin("Permissions");

@@ -26,10 +26,10 @@ public class Transmutr extends JavaPlugin {
     private TransmutrBlockListener blockListener;
     private TransmutrPluginListener pluginListener;
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
-    private CopyOnWriteArrayList<String> Transmutr = new CopyOnWriteArrayList<String>();
+    private CopyOnWriteArrayList<String> transmutr = new CopyOnWriteArrayList<String>();
 
     CopyOnWriteArrayList<String> GetBlocks() {
-        return Transmutr;
+        return transmutr;
     }
 
     public void onDisable() {
@@ -54,7 +54,7 @@ public class Transmutr extends JavaPlugin {
             while ((line = input.readLine()) != null) {
                 line = line.trim();
                 if (!line.matches("^#.*") && !line.matches("")) {
-                    Transmutr.add(line);
+                    transmutr.add(line);
                 }
             }
             input.close();
@@ -64,7 +64,7 @@ public class Transmutr extends JavaPlugin {
         // Register our events
         PluginManager pm = getServer().getPluginManager();
         //final Server server = getServer();
-        pm.registerEvent(Event.Type.BLOCK_RIGHTCLICKED, blockListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_INTERACT, blockListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLUGIN_ENABLE, pluginListener, Priority.Normal, this);
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
         PluginDescriptionFile pdfFile = this.getDescription();
