@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * Transmutr BlockListener
- * @author Snowl
+ * @author Ziddia
  */
 public class TransmutrBlockListener extends BlockListener {
 
@@ -46,11 +46,11 @@ public class TransmutrBlockListener extends BlockListener {
                         if (Math.random() < Double.valueOf(params[2])) {
                             if (event.getPlayer().getInventory().getItemInHand().getTypeId() == Integer.parseInt(params[0])) {
                                 event.getClickedBlock().setTypeId(Integer.valueOf(params[1]));
-                                ItemStack old = new ItemStack(event.getPlayer().getItemInHand().getTypeId(), event.getPlayer().getItemInHand().getAmount() - 1);
+                                ItemStack old = new ItemStack(event.getPlayer().getItemInHand().getTypeId(), event.getPlayer().getItemInHand().getAmount());
                                 event.getPlayer().setItemInHand(old);
                             }
                         } else {
-                            ItemStack old = new ItemStack(event.getPlayer().getItemInHand().getTypeId(), event.getPlayer().getItemInHand().getAmount() - 1);
+                            ItemStack old = new ItemStack(event.getPlayer().getItemInHand().getTypeId(), event.getPlayer().getItemInHand().getAmount());
                             event.getPlayer().setItemInHand(old);
                         }
                     }
