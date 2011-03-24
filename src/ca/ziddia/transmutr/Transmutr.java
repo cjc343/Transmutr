@@ -18,7 +18,7 @@ import org.bukkit.plugin.PluginManager;
 /**
  * Transmutr plugin for Bukkit
  *
- * @author ziddia
+ * @author Ziddia
  */
 public class Transmutr extends JavaPlugin {
 
@@ -26,23 +26,20 @@ public class Transmutr extends JavaPlugin {
     private TransmutrBlockListener blockListener;
     private TransmutrPluginListener pluginListener;
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
-    private CopyOnWriteArrayList<String> transmutr = new CopyOnWriteArrayList<String>();
+    private CopyOnWriteArrayList<String> transmutes = new CopyOnWriteArrayList<String>();
 
     CopyOnWriteArrayList<String> GetBlocks() {
-        return transmutr;
+        return transmutes;
     }
 
     public void onDisable() {
-    	PluginDescriptionFile pdfFile;
-    	pdfFile = this.getDescription();
-    	 System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!");
     }
 
     public void setup() {
         try {
-            new File("transmutr.properties").createNewFile();
+            new File("blocktransmute.properties").createNewFile();
         } catch (IOException ex) {
-            System.out.println("Could not create transmutr properties file. Create it manually!");
+            System.out.println("Could not create blocktransmute properties file. Create it manually!");
         }
     }
 
@@ -50,14 +47,14 @@ public class Transmutr extends JavaPlugin {
         // TODO: Place any custom enable code here including the registration of any events
         setup();
 
-        String fname = "transmutr.properties";
+        String fname = "blocktransmute.properties";
         try {
             BufferedReader input = new BufferedReader(new FileReader(fname));
             String line = null;
             while ((line = input.readLine()) != null) {
                 line = line.trim();
                 if (!line.matches("^#.*") && !line.matches("")) {
-                    transmutr.add(line);
+                    transmutes.add(line);
                 }
             }
             input.close();

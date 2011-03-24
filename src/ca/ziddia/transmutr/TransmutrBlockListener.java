@@ -5,11 +5,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import org.bukkit.event.block.*;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Transmutr BlockListener
+ * Transmutr Block Listener
  * @author Ziddia
  */
 public class TransmutrBlockListener extends BlockListener {
@@ -24,15 +23,15 @@ public class TransmutrBlockListener extends BlockListener {
         return "" + i;
     }
 
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        CopyOnWriteArrayList<String> transmutr = plugin.GetBlocks();
-        int blockId = event.getClickedBlock().getTypeId();
+    public void onBlockRightClick(BlockRightClickEvent event) {
+        CopyOnWriteArrayList<String> transmutes = plugin.GetBlocks();
+        int blockId = event.getBlock().getTypeId();
         Player p = event.getPlayer();
-        if(!plugin.getPermissions().has(p, "transmutr")){
+        if(!plugin.getPermissions().has(p, "Transmutr")){
             p.sendMessage(ChatColor.RED + "You don't have permssions to transmute blocks!");
             return;
         }
-        for (String blockid : transmutr) {
+        for (String blockid : transmutes) {
             String[] parts = blockid.split(";");
             if (convertSimple(blockId).equalsIgnoreCase(parts[0])) {
                 Integer index = 1;
@@ -45,12 +44,12 @@ public class TransmutrBlockListener extends BlockListener {
 
                         if (Math.random() < Double.valueOf(params[2])) {
                             if (event.getPlayer().getInventory().getItemInHand().getTypeId() == Integer.parseInt(params[0])) {
-                                event.getClickedBlock().setTypeId(Integer.valueOf(params[1]));
-                                ItemStack old = new ItemStack(event.getPlayer().getItemInHand().getTypeId(), event.getPlayer().getItemInHand().getAmount());
+                                event.getBlock().setTypeId(Integer.valueOf(params[1]));
+                                ItemStack old = new ItemStack(event.getPlayer().getItemInHand().getTypeId(), event.getPlayer().getItemInHand().getAmount() - 1);
                                 event.getPlayer().setItemInHand(old);
                             }
                         } else {
-                            ItemStack old = new ItemStack(event.getPlayer().getItemInHand().getTypeId(), event.getPlayer().getItemInHand().getAmount());
+                            ItemStack old = new ItemStack(event.getPlayer().getItemInHand().getTypeId(), event.getPlayer().getItemInHand().getAmount() - 1);
                             event.getPlayer().setItemInHand(old);
                         }
                     }

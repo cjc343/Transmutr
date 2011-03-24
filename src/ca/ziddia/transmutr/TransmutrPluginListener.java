@@ -1,4 +1,5 @@
 /*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -11,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 /**
  *
- * @author ziddia
+ * @author Ziddia
  */
 public class TransmutrPluginListener extends ServerListener {
 
