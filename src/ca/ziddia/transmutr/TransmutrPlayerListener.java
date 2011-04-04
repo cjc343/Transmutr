@@ -24,7 +24,7 @@ public class TransmutrPlayerListener extends PlayerListener {
         return "" + i;
     }
 
-    public void onBlockRightClick(PlayerInteractEvent event) {
+    public void onPlayerInteract(PlayerInteractEvent event) {
         CopyOnWriteArrayList<String> Transmutr = plugin.GetBlocks();
         int blockId = event.getClickedBlock().getTypeId();
         Player p = event.getPlayer();

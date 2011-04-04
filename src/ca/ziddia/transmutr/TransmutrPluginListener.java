@@ -1,7 +1,8 @@
 package ca.ziddia.transmutr;
 
 import com.nijikokun.bukkit.Permissions.Permissions;
-import org.bukkit.event.server.PluginEvent;
+
+import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.Plugin;
 
@@ -17,7 +18,7 @@ public class TransmutrPluginListener extends ServerListener {
         this.plugin = plugin;
     }
 
-    public void onPluginEnable(PluginEvent event) {
+    public void onPluginEnable(PluginEnableEvent event) {
         if (plugin.getPermissions() == null) {
             Plugin permissions = plugin.getServer().getPluginManager().getPlugin("Permissions");
 

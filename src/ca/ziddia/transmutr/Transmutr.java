@@ -33,6 +33,8 @@ public class Transmutr extends JavaPlugin {
     }
 
     public void onDisable() {
+    	PluginDescriptionFile pdfFile = this.getDescription();
+    	System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!");
     }
 
     public void setup() {
