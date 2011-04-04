@@ -22,9 +22,7 @@ import org.bukkit.plugin.PluginManager;
  */
 public class Transmutr extends JavaPlugin {
 
-    private PermissionHandler Permissions;
     private TransmutrPlayerListener playerListener;
-    private TransmutrPluginListener pluginListener;
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     private CopyOnWriteArrayList<String> Transmutr = new CopyOnWriteArrayList<String>();
 
@@ -65,7 +63,6 @@ public class Transmutr extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         //final Server server = getServer();
         pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLUGIN_ENABLE, pluginListener, Priority.Normal, this);
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
         PluginDescriptionFile pdfFile = this.getDescription();
         System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
@@ -85,14 +82,6 @@ public class Transmutr extends JavaPlugin {
 
     public void onLoad() {
         playerListener = new TransmutrPlayerListener(this);
-        pluginListener = new TransmutrPluginListener(this);
     }
 
-    public PermissionHandler getPermissions() {
-        return Permissions;
-    }
-
-    public void setPermissions(PermissionHandler Permissions) {
-        this.Permissions = Permissions;
-    }
 }
