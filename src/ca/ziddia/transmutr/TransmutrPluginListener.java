@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ca.ziddia.transmutr;
 
 import com.nijikokun.bukkit.Permissions.Permissions;
@@ -11,7 +7,7 @@ import org.bukkit.plugin.Plugin;
 
 /**
  *
- * @author martin
+ * @Author Ziddia
  */
 public class TransmutrPluginListener extends ServerListener {
 
@@ -21,7 +17,7 @@ public class TransmutrPluginListener extends ServerListener {
         this.plugin = plugin;
     }
 
-    public void onPluginEnabled(PluginEvent event) {
+    public void onPluginEnable(PluginEvent event) {
         if (plugin.getPermissions() == null) {
             Plugin permissions = plugin.getServer().getPluginManager().getPlugin("Permissions");
 

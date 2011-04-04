@@ -4,15 +4,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import org.bukkit.event.block.*;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * BlockTransmute Block Listener
- * @author Snowl
+ * Transmutr Block Listener
+ * @author Ziddia
  */
-public class TransmutrPlayerListener extends BlockListener {
+public class TransmutrPlayerListener extends PlayerListener {
 
     private final Transmutr plugin;
 
@@ -25,14 +25,14 @@ public class TransmutrPlayerListener extends BlockListener {
     }
 
     public void onBlockRightClick(PlayerInteractEvent event) {
-        CopyOnWriteArrayList<String> transmutes = plugin.GetBlocks();
+        CopyOnWriteArrayList<String> Transmutr = plugin.GetBlocks();
         int blockId = event.getClickedBlock().getTypeId();
         Player p = event.getPlayer();
         if(!plugin.getPermissions().has(p, "Transmutr")){
             p.sendMessage(ChatColor.RED + "You don't have permssions to transmute blocks!");
             return;
         }
-        for (String blockid : transmutes) {
+        for (String blockid : Transmutr) {
             String[] parts = blockid.split(";");
             if (convertSimple(blockId).equalsIgnoreCase(parts[0])) {
                 Integer index = 1;

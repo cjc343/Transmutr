@@ -26,10 +26,10 @@ public class Transmutr extends JavaPlugin {
     private TransmutrPlayerListener playerListener;
     private TransmutrPluginListener pluginListener;
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
-    private CopyOnWriteArrayList<String> transmutes = new CopyOnWriteArrayList<String>();
+    private CopyOnWriteArrayList<String> Transmutr = new CopyOnWriteArrayList<String>();
 
     CopyOnWriteArrayList<String> GetBlocks() {
-        return transmutes;
+        return Transmutr;
     }
 
     public void onDisable() {
@@ -37,9 +37,9 @@ public class Transmutr extends JavaPlugin {
 
     public void setup() {
         try {
-            new File("blocktransmute.properties").createNewFile();
+            new File("Transmutr.properties").createNewFile();
         } catch (IOException ex) {
-            System.out.println("Could not create blocktransmute properties file. Create it manually!");
+            System.out.println("Could not create Transmutr properties file. Create it manually!");
         }
     }
 
@@ -47,14 +47,14 @@ public class Transmutr extends JavaPlugin {
         // TODO: Place any custom enable code here including the registration of any events
         setup();
 
-        String fname = "blocktransmute.properties";
+        String fname = "Transmutr.properties";
         try {
             BufferedReader input = new BufferedReader(new FileReader(fname));
             String line = null;
             while ((line = input.readLine()) != null) {
                 line = line.trim();
                 if (!line.matches("^#.*") && !line.matches("")) {
-                    transmutes.add(line);
+                    Transmutr.add(line);
                 }
             }
             input.close();
