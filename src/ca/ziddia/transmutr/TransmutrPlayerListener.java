@@ -55,6 +55,9 @@ public class TransmutrPlayerListener extends PlayerListener {
 								event.getPlayer().setItemInHand(old);
 							}
 						}
+						if (event.getPlayer().getItemInHand().getAmount() == 0) {
+							event.getPlayer().getInventory().remove(event.getPlayer().getItemInHand());
+						}
 						index++;
 					}
 				}
