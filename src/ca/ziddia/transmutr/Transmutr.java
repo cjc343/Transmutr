@@ -26,35 +26,32 @@ public class Transmutr extends JavaPlugin {
 	private TransmutrPlayerListener playerListener;
 	private TransmutrPluginListener pluginListener;
 	private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
-
 	
 	private HashMap<Integer, LinkedList<TransmutrTransmuteCase>> cases = new HashMap<Integer, LinkedList<TransmutrTransmuteCase>>();
-	
 
+	//provide access to linked lists of block transmutes
 	HashMap<Integer, LinkedList<TransmutrTransmuteCase>> GetBlocks() {
 		return cases;
 	}
 
 	public void onDisable() {
-		PluginDescriptionFile pdfFile = this.getDescription();
-		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!");
+		//doesn't actually do anything, no reason to announce it and slow down the process.
 	}
 
-	public void setup() {
+	//creates the config if it does not exist as well as the folder.
+	private void createConfigFile() {
 		try {
-			if (!getDataFolder().exists()) {
-				getDataFolder().mkdirs();
+			if (!getDataFolder().exists()) {//check if the folder is already there
+				getDataFolder().mkdirs();//make it if it isn't
 			}
-			new File(getDataFolder().getPath() + "/Transmutr.properties").createNewFile();
+			new File(getDataFolder().getPath() + "/Transmutr.properties").createNewFile();//make the file if it isn't
 		} catch (IOException ex) {
 			System.out.println("Could not create Transmutr properties file. Create it manually!");
 		}
 	}
-
-	public void onEnable() {
-		// TODO: Place any custom enable code here including the registration of any events
-		setup();
-
+	
+	//reads the config
+	private ArrayList<String> readConfigFile(){
 		String fname = getDataFolder().getPath() + "/Transmutr.properties";
 		ArrayList<String> fileLines = new ArrayList<String>();
 		try {
@@ -70,27 +67,43 @@ public class Transmutr extends JavaPlugin {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		for (String blockid : fileLines) {
-			String[] parts = blockid.split(";");
-			if (parts.length == 2) {
-				String[] params = parts[1].split(":");
-				if (Integer.valueOf(parts[0]) > 0 && params.length == 3) {
+		return fileLines;
+	}
+	
+	//calls read to parse the config
+	private void parseConfigFile(){
+		for (String blockid : readConfigFile()) {//for each line of the config file
+			String[] parts = blockid.split(";");//split on the semi
+			if (parts.length == 2) {//check for 2 parts
+				String[] params = parts[1].split(":");//split on the full
+				if (Integer.valueOf(parts[0]) > 0 && params.length == 3) {//check for 3 parts and positive non-zero tool (not sure why that was checked for originally? maybe NPEs otherwise?)
 					TransmutrTransmuteCase newCase = new TransmutrTransmuteCase(Integer.valueOf(parts[0]), Integer.valueOf(params[0]), Integer.valueOf(params[1]), Double.valueOf(params[2]));
-					if (cases.containsKey(Integer.valueOf(parts[0]))) {
-						cases.get(Integer.valueOf(parts[0])).add(newCase);
+					if (cases.containsKey(Integer.valueOf(parts[0]))) {//check for existing List
+						cases.get(Integer.valueOf(parts[0])).add(newCase);//add to existing
 					} else {
 						LinkedList<TransmutrTransmuteCase> newList = new LinkedList<TransmutrTransmuteCase>();
-						newList.add(newCase);
+						newList.add(newCase);//create new and add
 						cases.put(Integer.valueOf(parts[0]), newList);
 					}
 				} else {
-					parseError(blockid);
+					parseError(blockid);//error in length or tool or
 				}
 			} else {
-				parseError(blockid);
+				parseError(blockid);//blockID
 			}
 		}
+	}
+	
+	//error parsing a line of the file
+	private void parseError(String line) {
+		System.out.println("There was an error parsing the following line of your Transmutr config:\n" + line);
+	}
+
+	public void onEnable() {
+		// TODO: Place any custom enable code here including the registration of any events
+		createConfigFile();//creates if nonexistent
+		parseConfigFile();//reads and parses
+		
 		// Register our events
 		PluginManager pm = getServer().getPluginManager();
 		// final Server server = getServer();
@@ -101,10 +114,6 @@ public class Transmutr extends JavaPlugin {
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 	}
 	
-	private void parseError(String line) {
-		System.out.println("There was an error parsing the following line of your Transmutr config:\n" + line);
-	}
-
 	public boolean isDebugging(final Player player) {
 		if (debugees.containsKey(player)) {
 			return debugees.get(player);
