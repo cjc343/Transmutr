@@ -4,6 +4,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
@@ -25,8 +26,10 @@ public class TransmutrPlayerListener extends PlayerListener {
     }
 
     public void onPlayerInteract(PlayerInteractEvent event) {
+    	if (event.getAction().compareTo(Action.RIGHT_CLICK_BLOCK) != 0) {
+    		return;
+    	}
         CopyOnWriteArrayList<String> Transmutr = plugin.GetBlocks();
-		try {
 			int blockId = event.getClickedBlock().getTypeId();
 			Player p = event.getPlayer();
 			if(!plugin.getPermissions().has(p, "Transmutr")){
@@ -62,8 +65,5 @@ public class TransmutrPlayerListener extends PlayerListener {
 					}
 				}
 			}
-		} catch (NullPointerException npe) {
-			// pointing at air or block out of reach
-		}
     }
 }
