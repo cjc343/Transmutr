@@ -5,9 +5,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import java.util.LinkedList;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
@@ -26,10 +26,13 @@ public class Transmutr extends JavaPlugin {
 	private TransmutrPlayerListener playerListener;
 	private TransmutrPluginListener pluginListener;
 	private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
-	private CopyOnWriteArrayList<String> Transmutr = new CopyOnWriteArrayList<String>();
 
-	CopyOnWriteArrayList<String> GetBlocks() {
-		return Transmutr;
+	
+	private HashMap<Integer, LinkedList<TransmutrTransmuteCase>> cases = new HashMap<Integer, LinkedList<TransmutrTransmuteCase>>();
+	
+
+	HashMap<Integer, LinkedList<TransmutrTransmuteCase>> GetBlocks() {
+		return cases;
 	}
 
 	public void onDisable() {
@@ -39,7 +42,10 @@ public class Transmutr extends JavaPlugin {
 
 	public void setup() {
 		try {
-			new File(getDataFolder().getPath() + "Transmutr.properties").createNewFile();
+			if (!getDataFolder().exists()) {
+				getDataFolder().mkdirs();
+			}
+			new File(getDataFolder().getPath() + "/Transmutr.properties").createNewFile();
 		} catch (IOException ex) {
 			System.out.println("Could not create Transmutr properties file. Create it manually!");
 		}
@@ -49,19 +55,41 @@ public class Transmutr extends JavaPlugin {
 		// TODO: Place any custom enable code here including the registration of any events
 		setup();
 
-		String fname = getDataFolder().getPath() + "Transmutr.properties";
+		String fname = getDataFolder().getPath() + "/Transmutr.properties";
+		ArrayList<String> fileLines = new ArrayList<String>();
 		try {
 			BufferedReader input = new BufferedReader(new FileReader(fname));
 			String line = null;
 			while ((line = input.readLine()) != null) {
 				line = line.trim();
 				if (!line.matches("^#.*") && !line.matches("")) {
-					Transmutr.add(line);
+					fileLines.add(line);
 				}
 			}
 			input.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		
+		for (String blockid : fileLines) {
+			String[] parts = blockid.split(";");
+			if (parts.length == 2) {
+				String[] params = parts[1].split(":");
+				if (Integer.valueOf(parts[0]) > 0 && params.length == 3) {
+					TransmutrTransmuteCase newCase = new TransmutrTransmuteCase(Integer.valueOf(parts[0]), Integer.valueOf(params[0]), Integer.valueOf(params[1]), Double.valueOf(params[2]));
+					if (cases.containsKey(Integer.valueOf(parts[0]))) {
+						cases.get(Integer.valueOf(parts[0])).add(newCase);
+					} else {
+						LinkedList<TransmutrTransmuteCase> newList = new LinkedList<TransmutrTransmuteCase>();
+						newList.add(newCase);
+						cases.put(Integer.valueOf(parts[0]), newList);
+					}
+				} else {
+					parseError(blockid);
+				}
+			} else {
+				parseError(blockid);
+			}
 		}
 		// Register our events
 		PluginManager pm = getServer().getPluginManager();
@@ -71,6 +99,10 @@ public class Transmutr extends JavaPlugin {
 		// EXAMPLE: Custom code, here we just output some info so we can check all is well
 		PluginDescriptionFile pdfFile = this.getDescription();
 		System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+	}
+	
+	private void parseError(String line) {
+		System.out.println("There was an error parsing the following line of your Transmutr config:\n" + line);
 	}
 
 	public boolean isDebugging(final Player player) {
