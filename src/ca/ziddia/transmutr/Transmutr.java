@@ -39,7 +39,7 @@ public class Transmutr extends JavaPlugin {
 
 	public void setup() {
 		try {
-			new File("Transmutr.properties").createNewFile();
+			new File(getDataFolder().getPath() + "Transmutr.properties").createNewFile();
 		} catch (IOException ex) {
 			System.out.println("Could not create Transmutr properties file. Create it manually!");
 		}
@@ -49,7 +49,7 @@ public class Transmutr extends JavaPlugin {
 		// TODO: Place any custom enable code here including the registration of any events
 		setup();
 
-		String fname = "Transmutr.properties";
+		String fname = getDataFolder().getPath() + "Transmutr.properties";
 		try {
 			BufferedReader input = new BufferedReader(new FileReader(fname));
 			String line = null;
