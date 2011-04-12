@@ -7,27 +7,27 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.Plugin;
 
 /**
- *
+ * 
  * @Author Ziddia
  */
 public class TransmutrPluginListener extends ServerListener {
 
-    private Transmutr plugin;
+	private Transmutr plugin;
 
-    public TransmutrPluginListener(Transmutr plugin) {
-        this.plugin = plugin;
-    }
+	public TransmutrPluginListener(Transmutr plugin) {
+		this.plugin = plugin;
+	}
 
-    public void onPluginEnable(PluginEnableEvent event) {
-        if (plugin.getPermissions() == null) {
-            Plugin permissions = plugin.getServer().getPluginManager().getPlugin("Permissions");
+	public void onPluginEnable(PluginEnableEvent event) {
+		if (plugin.getPermissions() == null) {
+			Plugin permissions = plugin.getServer().getPluginManager().getPlugin("Permissions");
 
-            if (permissions != null) {
-                if (permissions.isEnabled()) {
-                    plugin.setPermissions(((Permissions) permissions).getHandler());
-                    System.out.println("[Transmutr] Successfully linked with Permissions.");
-                }
-            }
-        }
-    }
+			if (permissions != null) {
+				if (permissions.isEnabled()) {
+					plugin.setPermissions(((Permissions) permissions).getHandler());
+					System.out.println("[Transmutr] Successfully linked with Permissions.");
+				}
+			}
+		}
+	}
 }
